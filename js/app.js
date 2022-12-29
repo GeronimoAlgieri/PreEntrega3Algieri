@@ -70,14 +70,6 @@
 
 // alert("El valor del producto mas el envio es de: $" + resultado)
 
-// const viajes = ["Doha, Qatar", "Madrid, España", "Roma, Italia"]
-// const aJson = JSON.stringify(viajes)
-// localStorage.setItem("Viajes", aJson)
-
-// const viajesArray = JSON.parse(localStorage.getItem("Viajes"))
-// viajesArray.push("Berlin, Alemania")
-// localStorage.setItem("Viajes", JSON.stringify(viajesArray))
-
 // Login y json
 
 // let user = document.querySelector("#username")
@@ -171,7 +163,7 @@ function carritoHTML() {
         <div class="container">
         <h5>${prod.titulo}</h5>
         <p>${prod.precio}</p>
-        <button class="btn btn-danger">Eliminar</button>
+        <button class="btn btn-danger" id="btnEliminar">Eliminar</button>
         </div>
         `;
         carrito.appendChild(row);
@@ -184,7 +176,7 @@ function limpiarHTML() {
 
 // Eliminar producto del carrito
 
-const vaciarCarritoBoton = document.querySelector(".btn btn-danger")
+const vaciarCarritoBoton=document.querySelector('#btnEliminar')
 vaciarCarritoBoton.addEventListener("click", vaciarCarrito)
 function vaciarCarrito() {
     contenedorCarrito.innerHTML = "";
@@ -194,9 +186,8 @@ carritoHTML()
 let nombre = document.querySelector("#nombre")
 let email = document.querySelector("#email")
 
-nombreForm.addEventListener("input", function () {
-    // console.log(nombreForm.value);
-    if (nombreForm.value === "") {
+nombre.addEventListener("input", function () {
+    if (nombre.value === "") {
         e.preventDefault
         info.innerHTML = `
         <div class="alert alert-danger" role="alert">
@@ -205,3 +196,26 @@ nombreForm.addEventListener("input", function () {
     }
 });
 
+correoForm.addEventListener("input", function () {
+    if (email.value === "") {
+        e.preventDefault
+        info.innerHTML = `
+        <div class="alert alert-danger" role="alert">
+        <h5>Ingrese un nombre valido</h5>
+        `
+    }
+});
+
+
+
+
+
+
+// Array de productos para guardar al localstorage
+const modelos = ["Sudadera con Capucha","Remera","Gorra de béisbol","Chaqueta acolchada ligera","Remera Polo","Softshell"]
+// // Guardar en LocalStorage
+
+const aJson = JSON.stringify(modelos)
+localStorage.setItem("Modelos", "Sudadera con Capucha")
+// const modelosArray = JSON.parse(localStorage.getItem("Modelos"))
+// console.log(modelosArray)
