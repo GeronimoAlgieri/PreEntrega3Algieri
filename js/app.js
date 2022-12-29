@@ -212,10 +212,10 @@ correoForm.addEventListener("input", function () {
 
 
 // Array de productos para guardar al localstorage
-const modelos = ["Sudadera con Capucha","Remera","Gorra de béisbol","Chaqueta acolchada ligera","Remera Polo","Softshell"]
+// const modelos = ["Sudadera con Capucha","Remera","Gorra de béisbol","Chaqueta acolchada ligera","Remera Polo","Softshell"]
 // // Guardar en LocalStorage
 
-const aJson = JSON.stringify(modelos)
+// const aJson = JSON.stringify(modelos)
 localStorage.setItem("Modelos", "Sudadera con Capucha")
 // const modelosArray = JSON.parse(localStorage.getItem("Modelos"))
 // console.log(modelosArray)
