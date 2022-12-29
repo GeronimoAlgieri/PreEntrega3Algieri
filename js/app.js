@@ -78,6 +78,22 @@
 // viajesArray.push("Berlin, Alemania")
 // localStorage.setItem("Viajes", JSON.stringify(viajesArray))
 
+// Login y json
+
+// let user = document.querySelector("#username")
+// let pass = document.querySelector("#pass")
+// let boton = document.querySelector("#button")
+
+// const logear = button.addEventListener("click", function(e){
+//     e.preventDefault()
+//     window.location = "productos.html"
+//     const data = {
+//         user: username.value,
+//         pass: pass.value
+//     }
+//     console.log(data)
+// })
+
 
 const contenedorProductos = document.getElementById(`contenedor-productos`)
 
@@ -89,7 +105,7 @@ const armarTabla = (prod) =>{
                 <div class="card-body">
                     <h5 class="card-title">${prod.nombre}</h5>
                     <p class="card-text">Precio:$${prod.precio}</p>
-                    <a href="#" class="btn btn-primary">AGREGAR</a>
+                    <button type="button" class="btn btn-primary">Agregar</button>
                 </div>
             </div>`
 }
@@ -120,3 +136,72 @@ const filtrarProductos = ()=>{
 inputSearch.addEventListener("search", () => {
     filtrarProductos()
 })
+
+// Agregado de productos al carrito
+
+const cards = document.querySelectorAll(".card");
+cards.forEach((card) => {
+    card.addEventListener("click", (e) => {
+        leerDatosProducto(e.target.parentElement);
+    });
+});
+
+let articulosCarrito = [];
+
+function leerDatosProducto(producto) {
+    const infoProducto = {
+        titulo: producto.querySelector(".card-title").textContent,
+        precio: producto.querySelector(".card-text").textContent,
+    };
+
+    articulosCarrito = [...articulosCarrito, infoProducto];
+
+    carritoHTML();
+}
+
+const carrito = document.querySelector("#carrito");
+
+function carritoHTML() {
+    
+    limpiarHTML();
+    
+    articulosCarrito.forEach((prod) => {
+        const row = document.createElement("p");
+        row.innerHTML = `
+        <div class="container">
+        <h5>${prod.titulo}</h5>
+        <p>${prod.precio}</p>
+        <button class="btn btn-danger">Eliminar</button>
+        </div>
+        `;
+        carrito.appendChild(row);
+    });
+}
+
+function limpiarHTML() {
+    carrito.innerHTML = "";
+}
+
+// Eliminar producto del carrito
+
+const vaciarCarritoBoton = document.querySelector(".btn btn-danger")
+vaciarCarritoBoton.addEventListener("click", vaciarCarrito)
+function vaciarCarrito() {
+    contenedorCarrito.innerHTML = "";
+}
+carritoHTML()
+
+let nombre = document.querySelector("#nombre")
+let email = document.querySelector("#email")
+
+nombreForm.addEventListener("input", function () {
+    // console.log(nombreForm.value);
+    if (nombreForm.value === "") {
+        e.preventDefault
+        info.innerHTML = `
+        <div class="alert alert-danger" role="alert">
+        <h5>Ingrese un nombre valido</h5>
+        `
+    }
+});
+
