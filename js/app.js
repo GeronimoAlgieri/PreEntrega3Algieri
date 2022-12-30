@@ -88,7 +88,7 @@ const carrito = document.querySelector("#carrito");
 
 function carritoHTML() {
     
-    limpiarHTML();
+    limpiarHTML()
     
     articulosCarrito.forEach((prod) => {
         const row = document.createElement("p");
@@ -96,7 +96,7 @@ function carritoHTML() {
         <div class="container">
         <h5>${prod.titulo}</h5>
         <p>${prod.precio}</p>
-        <button onclick="vaciarCarrito()" class="btn btn-danger" id="eliminar">Eliminar</button>
+        <button onclick="vaciarCarrito(${prod.id})" class="btn btn-danger" id="eliminar">Eliminar</button>
         </div>
         `;
         carrito.appendChild(row);
@@ -109,13 +109,14 @@ function limpiarHTML() {
 
 // Eliminar producto del carrito
 
-const vaciarCarritoBoton = document.querySelector("#eliminar")
-vaciarCarritoBoton.addEventListener("click", vaciarCarrito())
-
-function vaciarCarrito() {
-    carrito.innerHTML = "";
+const vaciarCarrito = (prodId) => {
+    const item = articulosCarrito.find((prod) => prod.titulo === prodId)
+    const indice = articulosCarrito.indexOf(item)
+    articulosCarrito.splice(indice, 1)
+    
+    limpiarHTML()
 }
-carritoHTML()
+
 
 // let nombre = document.querySelector("#nombre")
 // let email = document.querySelector("#email")
