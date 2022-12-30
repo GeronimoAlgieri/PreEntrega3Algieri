@@ -1,75 +1,3 @@
-// let nombre = (prompt("Ingrese su nombre"));
-// let apellido = (prompt("Ingrese su apellido"));
-// let edad = parseInt(prompt("Ingrese su edad"));
-
-// if (edad >= 16) {
-//   alert("Bienvenido " + nombre + " " + apellido + " puedes usar esta pagina")
-// } else {
-//   alert(nombre + " " + apellido + " no puedes usar esta pagina")
-// }
-
-// const date = new Date(prompt("Ingrese fecha de registro. mes/dia/año"));
-// const [month, day, year] = [date.getMonth(), date.getDay(), date.getFullYear()];
-
-// alert("Te registraste el " + date)
-
-// const carrito = [
-//   {nombre: "Remera Mercedes Benz", precio:10000, disponible: "Hay stock"},
-//   {nombre: "Gorra Mercedes Benz",precio: 7000, disponible: "No hay stock"},
-//   {nombre: "Campera Mercedes Benz",precio: 15000, disponible: "No hay stock"},
-//   {nombre: "Remera Red Bull",precio: 10000, disponible: "Hay stock"},
-//   {nombre: "Gorra Red Bull",precio: 7000, disponible: "Hay stock"},
-//   {nombre: "Campera Red Bull",precio: 15000, disponible: "Hay stock"},
-// ];
-
-// carrito.forEach((producto) => {
-//   console.log (producto.nombre)
-//   console.log (producto.precio)
-//   console.log (producto.disponible)
-// }) 
-
-// console.log("")
-// console.log("Filtro de precios")
-
-// const porPrecio = carrito.filter((p) => p.precio <= 10000);
-// console.log(porPrecio);
-
-// console.log("Filtro de disponible")
-
-// const porStock = carrito.filter((p) => p.disponible.includes(`Hay`) )
-// console.log(porStock)
-
-// const totalCarrito = carrito.reduce ((accum,p) => accum + p.precio, 0 )
-// console.log("La suma de todos los productos es de: " + totalCarrito)
-
-// function Envios(provincia, costo){
-//   this.provincia = provincia
-//   this.costo = costo
-// }
-
-// console.log("Precios de envios")
-
-// const lugar = new Envios("Cordoba", 1000)
-// const lugar1 = new Envios("Buenos Aires", 500)
-// const lugar2 = new Envios("Misiones", 2000)
-// const lugar3 = new Envios("Mendoza", 1200)
-
-// console.log(lugar)
-// console.log(lugar1)
-// console.log(lugar2)
-// console.log(lugar3)
-
-// let precioProducto = parseInt(prompt("Ingrese el valor del producto seleccionado"))
-// let precioEnvio = parseInt(prompt("Ingrese el valor del envio donde desee que llegue el producto"))
-
-// function precioTotal(precioProducto,precioEnvio){
-//   return precioProducto + precioEnvio
-// }
-
-// let resultado = precioTotal(precioProducto,precioEnvio)
-
-// alert("El valor del producto mas el envio es de: $" + resultado)
-
 // Login y json
 
 // let user = document.querySelector("#username")
@@ -85,7 +13,12 @@
 //     }
 //     console.log(data)
 // })
+// Array de productos para guardar al localstorage
+const modelos = ["Sudadera con Capucha, Scuderia Mercedes AMG","Remera, Scuderia Mercedes AMG","Gorra de béisbol, Scuderia Mercedes AMG","Chaqueta acolchada ligera, Scuderia Mercedes AMG","Remera Polo, equipo Red Bull Racing","Gorra de béisbol, Scuderia Red Bull Racing","Sudadera con capucha, Scuderia Red Bull Racing","Softshell, Scuderia Red Bull Racing","Remera, Scuderia Ferrari Team Carlos Sainz","Sudadera con capucha negra, Scuderia Ferrari","Remera, Scuderia Ferrari Team Charles Leclerc","Sudadera con capucha, Scuderia Ferrari"]
+// // Guardar en LocalStorage
 
+const aJson = JSON.stringify(modelos)
+localStorage.setItem("Modelos de ropa", aJson)
 
 const contenedorProductos = document.getElementById(`contenedor-productos`)
 
@@ -163,7 +96,7 @@ function carritoHTML() {
         <div class="container">
         <h5>${prod.titulo}</h5>
         <p>${prod.precio}</p>
-        <button class="btn btn-danger" id="btnEliminar">Eliminar</button>
+        <button onclick="vaciarCarrito()" class="btn btn-danger" id="eliminar">Eliminar</button>
         </div>
         `;
         carrito.appendChild(row);
@@ -176,46 +109,34 @@ function limpiarHTML() {
 
 // Eliminar producto del carrito
 
-const vaciarCarritoBoton=document.querySelector('#btnEliminar')
-vaciarCarritoBoton.addEventListener("click", vaciarCarrito)
+const vaciarCarritoBoton = document.querySelector("#eliminar")
+vaciarCarritoBoton.addEventListener("click", vaciarCarrito())
+
 function vaciarCarrito() {
-    contenedorCarrito.innerHTML = "";
+    carrito.innerHTML = "";
 }
 carritoHTML()
 
-let nombre = document.querySelector("#nombre")
-let email = document.querySelector("#email")
+// let nombre = document.querySelector("#nombre")
+// let email = document.querySelector("#email")
 
-nombre.addEventListener("input", function () {
-    if (nombre.value === "") {
-        e.preventDefault
-        info.innerHTML = `
-        <div class="alert alert-danger" role="alert">
-        <h5>Ingrese un nombre valido</h5>
-        `
-    }
-});
+// nombre.addEventListener("input", function () {
+//     if (nombre.value === "") {
+//         e.preventDefault
+//         info.innerHTML = `
+//         <div class="alert alert-danger" role="alert">
+//         <h5>Ingrese un nombre valido</h5>
+//         `
+//     }
+// });
 
-correoForm.addEventListener("input", function () {
-    if (email.value === "") {
-        e.preventDefault
-        info.innerHTML = `
-        <div class="alert alert-danger" role="alert">
-        <h5>Ingrese un nombre valido</h5>
-        `
-    }
-});
+// email.addEventListener("input", function () {
+//     if (email.value === "") {
+//         e.preventDefault
+//         info.innerHTML = `
+//         <div class="alert alert-danger" role="alert">
+//         <h5>Ingrese un nombre valido</h5>
+//         `
+//     }
+// });
 
-
-
-
-
-
-// Array de productos para guardar al localstorage
-// const modelos = ["Sudadera con Capucha","Remera","Gorra de béisbol","Chaqueta acolchada ligera","Remera Polo","Softshell"]
-// // Guardar en LocalStorage
-
-// const aJson = JSON.stringify(modelos)
-localStorage.setItem("Modelos", "Sudadera con Capucha")
-// const modelosArray = JSON.parse(localStorage.getItem("Modelos"))
-// console.log(modelosArray)
