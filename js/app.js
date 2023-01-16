@@ -33,9 +33,8 @@ fetch("/data.json")
     
     function leerDatosProducto(producto) {
         const infoProducto = {
-            titulo: producto.querySelector("${prod.nombre}").textContent,
-            precio: producto.querySelector("${prod.precio}").textContent,
-            id: producto.querySelector("${prod.id}")
+            titulo: producto.querySelector(".card-title").textContent,
+            precio: producto.querySelector(".card-text").textContent,
         };
     
         articulosCarrito = [...articulosCarrito, infoProducto];
