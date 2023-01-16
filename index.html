@@ -16,7 +16,7 @@
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -42,13 +42,28 @@
       </div>
     </div>
   </nav>
-  <div class="p-2">
-    <button type="button" id="carrito" class="btn btn-primary">CARRITO <i class="fa-sharp fa-solid fa-cart-shopping"></i></button>
-  </div>
+    <button type="button" id="carrito" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#miModal">CARRITO <i class="fa-sharp fa-solid fa-cart-shopping"></i></button>
+    <div class="modal fade" id="miModal" tabindex="-1" aria-hidden="true" aria-labelledby="modalTittle">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-tittle" id="modalTittle">Carrito de comrpas</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="#carritoVacio">
+            <p>Agrega un producto</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </header>
+
 <body>
   <h1 class="prod">Productos</h1>
-  <input type="search" placeholder="Escriba lo que quiera encontrar" class="form-control" id="inputSearch">
+  <input type="search" placeholder="Escriba lo que quiera encontrar" class="form-control search" id="inputSearch">
   
   <main id="contenedor-productos">
     
