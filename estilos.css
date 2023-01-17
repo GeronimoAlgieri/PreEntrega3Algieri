@@ -55,7 +55,7 @@ form button{
 img {
     width: 100%;
     margin-bottom: 10px;
-}
+} 
 header {
     display: flex;
     justify-content: space-between;
@@ -64,7 +64,7 @@ header {
     box-shadow: 0px 5px 4px 3px rgba(0, 0, 0, 0.3);
     margin-bottom: 20px;
 }
-/* #contenedor-productos */
+
 #carrito-contenedor {
     max-width: 1200px;
     margin: 60px auto;
@@ -89,13 +89,13 @@ header {
     margin-left: 350px;
     font-family: sans-serif;
 }
-/* .form-label{
+.form-label{
     max-width: 1000px;
     height: 35px;
     margin-top: 35px;
     margin-left: 350px;
     font-family: sans-serif;
-} */
+}
 
 .checkout{
     width: 1000px;
