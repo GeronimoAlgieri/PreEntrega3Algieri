@@ -1,7 +1,11 @@
+// Un array vacio para el carrito
+let articulosCarrito = [];
+let total = 0
 const elementos = document.getElementById(`carrito-contenedor`)
 
+
 // Traigo los productos desde json
-fetch("/data.json")
+fetch("./json/data.json")
 .then((resp)=>resp.json())
 .then((data)=>renderizar(data))
 
@@ -20,6 +24,7 @@ function renderizar(data){
     elementos.appendChild(div)
     })
 
+    // Plasmo los productos en el HTML
     const cargarProductos = (array)=> {
         let tabla = ""
         if (array.length > 0) {
@@ -56,48 +61,49 @@ function renderizar(data){
 }
 // Filtrado de productos
 const inputSearch = document.getElementById(`inputSearch`)
-.then(()=>{
-    const filtrarProductos = ()=>{
-        let parametro = inputSearch.value.trim()
-        let resultado = resp.filter(data => data.nombre.includes(parametro(data)))
-        if (resultado.length > 0){
-            cargarProductos(resultado)
-        }
+
+const filtrarProductos = (data)=>{
+    let parametro = inputSearch.value.trim()
+    let resultado = data.filter(prod => prod.nombre.includes(parametro))
+    if (resultado.length > 0){
+        cargarProductos(resultado)
     }
-    inputSearch.addEventListener("search", () => {
-        filtrarProductos()
-    }) 
-    
-})
-// Ejecucion de filtrado de productos
-// inputSearch.addEventListener("search", () => {
-//     filtrarProductos()
-// }) 
-    
-    // Un array vacio para el carrito
-let articulosCarrito = [];
-    
-    function leerDatosProducto(e, productos) {
-    const producto = productos.find(p => p.id === e.target.id)
-    
-    articulosCarrito.push(producto)
-
-
-
-
-//     const infoProducto = {
-//     titulo: producto.querySelector(".card-title").textContent,
-//     precio: producto.querySelector(".card-text").textContent,
-//     };
-// articulosCarrito = [...articulosCarrito, infoProducto];
-    
-carritoHTML();
 }
+// Ejecucion de filtrado de productos
+inputSearch.addEventListener("search", () => {
+    fetch("./json/data.json")
+    .then((resp)=>resp.json())
+    .then((data)=>{
+    filtrarProductos(data);
+    }) 
+}) 
+    
+
+document.addEventListener("DOMContentLoaded", () => {
+    articulosCarrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    carritoHTML();
+    document.querySelector("#activarFuncion").click(procesarPedido);
+});
+    
+function leerDatosProducto(producto) {
+// const producto = productos.find(p => p.id === e.target.id)
+    
+    const infoProducto = {
+        titulo: producto.querySelector(".card-title").textContent,
+        precio: producto.querySelector(".card-text").textContent,
+    };
+    articulosCarrito = [...articulosCarrito, infoProducto];
+    
+    // articulosCarrito.push(producto)
+    carritoHTML();
+}
+
 const carrito = document.getElementById("#carritoVacio");
 
 function carritoHTML() {
     carrito.innerHTML = "";
-    limpiarHTML()
+    // limpiarHTML()
     // Asi se muestra el producto en el carrito
     articulosCarrito.forEach((prod) => {
         const row = document.createElement("div");
@@ -105,7 +111,7 @@ function carritoHTML() {
         <div class="container">
             <h5>${prod.titulo}</h5>
             <p>${prod.precio}</p>
-            <button class="btn btn-danger" id="${prod.id}">Eliminar</button>
+            <button onclick="eliminarDelCarro" class="btn btn-danger" id="${prod.id}">Eliminar</button>
         </div>
         `;
         carrito.appendChild(row);
@@ -130,9 +136,10 @@ function carritoHTML() {
 carrito.addEventListener(`click`, eliminar)
     
 function eliminar (e) {
-    articulosCarrito = articulosCarrito.filter(prod => prod.id !== e.target.id);
-    carritoHTML()
+    const prodId = id
+    articulosCarrito = articulosCarrito.filter((prod) => prod.id !== prodId);
 }
+eliminar()
 
 
 
@@ -141,18 +148,6 @@ function eliminar (e) {
 //     //     imprimirCarrito()
 //     // }
 
-// // Plasmo los productos en la pagina
-
-const cargarProductos = (array)=> {
-    let tabla = ""
-    if (array.length > 0) {
-        array.forEach(prod => {
-            tabla += armarTabla(prod)
-        });
-        elementos.innerHTML = tabla
-    }
-}
-cargarProductos(elementos)
 
 // const procesaCompra = document.getElementById(`continuarCompra`)
 
@@ -169,4 +164,4 @@ cargarProductos(elementos)
 //         location.href = "checkout.html";
 //       }
 //     });
-//   }
+// }
