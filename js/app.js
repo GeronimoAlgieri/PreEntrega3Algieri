@@ -1,13 +1,39 @@
 // Un array vacio para el carrito
-let articulosCarrito = [];
+let carrito = [];
 let total = 0
 const elementos = document.getElementById(`carrito-contenedor`)
 
 
+function searchFilter(input, selector){
+    document.addEventListener("keyup",(e)=>{
+        if(e.target.matches(input)){
+            console.log(e.target.value);
+            document.querySelectorAll(selector).forEach(element =>
+                (element.textContent.toLowerCase().includes(e.target.value))? element.classList.remove("filter"): element.classList.add("filter"))
+        }
+    })
+}
+
+searchFilter(".search", ".card")
+
+document.addEventListener('DOMContentLoaded', e => { 
+    fetchData() 
+    if (localStorage.getItem('carrito')) {
+        carrito = JSON.parse(localStorage.getItem('carrito'))
+        llenarCarrito()
+    }
+});
+
+const fetchData = async () => {
+    const res = await fetch('data.json');
+    const data = await res.json()
+    renderizar(data)
+}
+
 // Traigo los productos desde json
-fetch("./json/data.json")
-.then((resp)=>resp.json())
-.then((data)=>renderizar(data))
+// fetch("/data.json")
+// .then((resp)=>resp.json())
+// .then((data)=>renderizar(data))
 
     // Tabla de productos
 function renderizar(data){
@@ -18,74 +44,39 @@ function renderizar(data){
                 <div class="card-body">
                     <h5 class="card-title">${prod.nombre}</h5>
                     <p class="card-text">Precio:$${prod.precio}</p>
-                    <button type="button" class="btn btn-primary button" id="${prod.id}">Agregar</button>
+                    <button type="button" class="btn-compra btn btn-primary button">Agregar</button>
                 </div>
         </div>`
     elementos.appendChild(div)
     })
-
-    // Plasmo los productos en el HTML
-    const cargarProductos = (array)=> {
-        let tabla = ""
-        if (array.length > 0) {
-            array.forEach(prod => {
-                tabla += armarTabla(prod)
-            });
-            elementos.innerHTML = tabla
-        }
-    }
-    cargarProductos(elementos)
-
     // Agrego la funcion de agregar al carrito
-    const button = document.querySelectorAll(".button");
-    button.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-        Toastify({
-            text: "El producto se agrego al carrito",
-            duration: 3000,
-            destination: "https://github.com/apvarun/toastify-js",
-            newWindow: true,
-            close: true,
-            gravity: "bottom", // `top` or `bottom`
-            position: "right", // `left`, `center` or `right`
-            stopOnFocus: true, // Prevents dismissing of toast on hover
-            style: {
-            background: "linear-gradient(to right, #00b09b, #96c93d)",
-            },
-            onClick: function(){} // Callback after click
-        }).showToast();
+    const button = document.querySelectorAll(".btn-compra");
+    button.forEach((data) => {
+    data.addEventListener("click", (e) => {
         leerDatosProducto(e.target.parentElement);
+        // notificar()
         });
-        // localStorage.setItem("productos-en-carrito", JSON.stringify(articulosCarrito))
-    });
+    // localStorage.setItem("productos-en-carrito", JSON.stringify(articulosCarrito))
+    }); 
 }
-// Filtrado de productos
-const inputSearch = document.getElementById(`inputSearch`)
 
-const filtrarProductos = (data)=>{
-    let parametro = inputSearch.value.trim()
-    let resultado = data.filter(prod => prod.nombre.includes(parametro))
-    if (resultado.length > 0){
-        cargarProductos(resultado)
-    }
+function notificar(){
+    Toastify({
+        text: "El producto se agrego al carrito",
+        duration: 3000,
+        destination: "https://github.com/apvarun/toastify-js",
+        newWindow: true,
+        close: true,
+        gravity: "bottom", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+        background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+        onClick: function(){} // Callback after click
+    }).showToast();
 }
-// Ejecucion de filtrado de productos
-inputSearch.addEventListener("search", () => {
-    fetch("./json/data.json")
-    .then((resp)=>resp.json())
-    .then((data)=>{
-    filtrarProductos(data);
-    }) 
-}) 
-    
 
-document.addEventListener("DOMContentLoaded", () => {
-    articulosCarrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
-    carritoHTML();
-    document.querySelector("#activarFuncion").click(procesarPedido);
-});
-    
 function leerDatosProducto(producto) {
 // const producto = productos.find(p => p.id === e.target.id)
     
@@ -93,28 +84,82 @@ function leerDatosProducto(producto) {
         titulo: producto.querySelector(".card-title").textContent,
         precio: producto.querySelector(".card-text").textContent,
     };
-    articulosCarrito = [...articulosCarrito, infoProducto];
+    carrito = [...carrito, infoProducto];
     
-    // articulosCarrito.push(producto)
     carritoHTML();
 }
 
-const carrito = document.getElementById("#carritoVacio");
+// const botonCompra = document.querySelectorAll(".btn.compra")
+// botonCompra.forEach(btn => btn.addEventListener("click", (e)=> agregarAlCarrito(e, data)))
+
+// function agregarAlCarrito(evento) {
+//     carrito.push(evento.target.getAttribute('marcador'))
+//     carritoHTML();
+// }
+
+
+
+
+// Plasmo los productos en el HTML
+const cargarProductos = (array)=> {
+    let tabla = ""
+    if (array.length > 0) {
+        array.forEach(prod => {
+            tabla += armarTabla(prod)
+        });
+        elementos.innerHTML = tabla
+    }
+}
+cargarProductos(elementos)
+    
+function eliminar(e) {
+    if (e.target.classList.contains("bnt-eliminar")) {
+        let productoID = e.target.getAttribute("id");
+        carrito = carrito.filter(
+            (producto) => producto.id !== productoID
+        );
+    carritoHTML();
+    }
+}
+
+function limpiarHTML(){
+    carrito.innerHTML = ""
+}
+
+const vaciarCarrito = document.getElementById(`vaciarCarrito`)
+
+vaciarCarrito.addEventListener("click", () => {
+    carrito.length = [];
+    carritoHTML();
+});
+
+// Filtrado de productos
+// const inputSearch = document.getElementById(`inputSearch`)
+    
+
+// document.addEventListener("DOMContentLoaded", () => {
+//     articulosCarrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+//     carritoHTML();
+//     document.querySelector("#activarFuncion").click(procesarPedido);
+// });
+
+const agregadoAlCarrito = document.getElementById(`carritoVacio`);
 
 function carritoHTML() {
-    carrito.innerHTML = "";
-    // limpiarHTML()
+    // agregadoAlCarrito.innerHTML = "";
+    limpiarHTML()
     // Asi se muestra el producto en el carrito
-    articulosCarrito.forEach((prod) => {
+    carrito.forEach((prod) => {
         const row = document.createElement("div");
         row.innerHTML = `
         <div class="container">
             <h5>${prod.titulo}</h5>
             <p>${prod.precio}</p>
-            <button onclick="eliminarDelCarro" class="btn btn-danger" id="${prod.id}">Eliminar</button>
+            <button class="btn btn-danger btn-eliminar" id="${prod.id}">Eliminar</button>
         </div>
         `;
-        carrito.appendChild(row);
+        agregadoAlCarrito.appendChild(row);
     });
 }
 
@@ -131,17 +176,6 @@ function carritoHTML() {
 // inputSearch.addEventListener("search", () => {
 //     filtrarProductos()
 // })    
-
-
-carrito.addEventListener(`click`, eliminar)
-    
-function eliminar (e) {
-    const prodId = id
-    articulosCarrito = articulosCarrito.filter((prod) => prod.id !== prodId);
-}
-eliminar()
-
-
 
 //     // let carritoArt = JSON.parse(localStorage.getItem("carrito")) || []
 //     // if (carritoArt.length > 0) {
