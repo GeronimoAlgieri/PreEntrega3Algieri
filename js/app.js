@@ -3,18 +3,17 @@ let carrito = [];
 // let total = 0
 const elementos = document.getElementById(`carrito-contenedor`)
 
-// Filtrado de productos en un input
-function searchFilter(input, selector){
-    document.addEventListener("keyup",(e)=>{
-        if(e.target.matches(input)){
-            console.log(e.target.value);
-            document.querySelectorAll(selector).forEach(element =>
-                (element.textContent.toLowerCase().includes(e.target.value))? element.classList.remove("filter"): element.classList.add("filter"))
-        }
-    })
-}
+document.addEventListener("keyup", e=>{
 
-searchFilter(".search", ".card-title")
+    if (e.target.matches("#inputSearch")){
+        if (e.key ==="Escape")e.target.value = ""
+        document.querySelectorAll(".card").forEach(elemento =>{
+            elemento.textContent.toLowerCase().includes(e.target.value.toLowerCase())
+                ?elemento.classList.remove("filtro")
+                :elemento.classList.add("filtro")
+        })
+    }
+}) 
 
 document.addEventListener('DOMContentLoaded', e => { 
     fetchData() 
@@ -26,41 +25,37 @@ document.addEventListener('DOMContentLoaded', e => {
 
 // Traigo los datos de json 
 const fetchData = async () => {
-    const res = await fetch('data.json');
+    const res = await fetch('./data.json');
     const data = await res.json()
     renderizar(data)
 }
 
-// Traigo los productos desde json
-// fetch("/data.json")
-// .then((resp)=>resp.json())
-// .then((data)=>renderizar(data))
-
     // Tabla de productos
-function renderizar(data){
-    data.forEach((prod)=>{
+function renderizar(productos){
+    productos.forEach((prod)=>{
         const div = document.createElement("div")
         div.innerHTML=`<div class="card" style="width: 18rem;">
             <img src="${prod.img}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">${prod.nombre}</h5>
                     <p class="card-text">Precio:$${prod.precio}</p>
-                    <p class="card-text">Cantidad: ${prod.cantidad}</p>
-                    <button type="button" class="btn-compra btn btn-primary button" id="${prod.id}">Agregar</button>
+                    <button type="button" class="btn btn-primary btn-comprar" id="${prod.id}">Agregar</button>
                 </div>
         </div>`
     elementos.appendChild(div)
     })
     // Agrego la funcion de agregar al carrito
-    const button = document.querySelectorAll(".btn-compra");
-    button.forEach((data) => {
-    data.addEventListener("click", (e) => {
-        leerDatosProducto(e.target.parentElement);
-        notificar()
-        limpiarHTML()
-        });
-    // localStorage.setItem("productos-en-carrito", JSON.stringify(articulosCarrito))
-    }); 
+    const botonComprar = document.querySelectorAll(".btn-comprar");
+    botonComprar.forEach(btn => {
+        btn.addEventListener("click", (e)=> agregarAlCarrito(e, productos))
+    })
+}
+
+function agregarAlCarrito(e, prods){
+    const prodElegidos = prods.find(el => el.id === parseInt(e.target.id))
+    carrito.push(prodElegidos)
+    carritoHTML()
+    notificar()
 }
 
 function notificar(){
@@ -73,44 +68,26 @@ function notificar(){
     })
 }
 
-function leerDatosProducto(producto) {
-    
-    const infoProducto = {
-        titulo: producto.querySelector(".card-title").textContent,
-        precio: producto.querySelector(".card-text").textContent,
-        id: producto.querySelector('btn-compra').dataset.id,
-        // cantidad: 1
-    };
-    // if (carrito.hasOwnProperty(producto.id)) {
-    //     producto.cantidad = carrito[producto.id].cantidad + 1
-    // }
-    carrito = [...carrito, infoProducto];
-    
-    carritoHTML();
-}
-
 const totalCompra = document.getElementById(`totalCompra`)
 
 function carritoHTML() {
     agregadoAlCarrito.innerHTML = "";
-    // limpiarHTML()
     // Asi se muestra el producto en el carrito
     carrito.forEach((prod) => {
         const row = document.createElement("div");
         row.innerHTML = `
         <div class="card w-75 mb-3">
             <div class="card-body">
-                <h5 class="card-title">${prod.titulo}</h5>
-                <p class="card-text">${prod.precio}</p>
-                <p class="card-text">Cantidad: ${prod.cantidad}</p>
+                <h5 class="card-title">${prod.nombre}</h5>
+                <p class="card-text">Precio: $${prod.precio}</p>
                 <button onClick = "eliminarDelCarrito()" class="btn btn-danger btn-eliminar" id="${prod.id}">Eliminar</button>
             </div>
         </div>
         `;
         agregadoAlCarrito.appendChild(row);
     });
-    calcularTotalCompra()
-    // actualizarTotal()
+    // calcularTotalCompra()
+    actualizarTotal()
     localStorage.setItem('carrito', JSON.stringify(carrito))
 }
 
@@ -135,17 +112,17 @@ vaciarCarrito.addEventListener('click', () => {
 
 
 
-const calcularTotalCompra = () => {
-    let total = 0;
-    carrito.forEach((prod) => {
-        total += prod.precio * prod.cantidad;
-    });
-    totalCompra.innerHTML = total;
-};
-// function actualizarTotal() {
-//     const totalCalculado = carrito.reduce((acc, prod) => acc + (prod.precio * prod.cantidad), 0);
-//     totalCompra.textContent = "$" + totalCalculado;
-// }
+// const calcularTotalCompra = () => {
+//     let total = 0;
+//     carrito.forEach((prod) => {
+//         total += prod.precio * prod.cantidad;
+//     });
+//     totalCompra.innerHTML = total;
+// };
+function actualizarTotal() {
+    const totalCalculado = carrito.reduce((acc, prod) => acc + (prod.precio * prod.cantidad), 0);
+    totalCompra.textContent = "$" + totalCalculado;
+}
 
 
 // Plasmo los productos en el HTML
@@ -167,20 +144,6 @@ function limpiarHTML(){
     carrito.innerHTML = ""
 }
 
-// Filtrado de productos
-// const inputSearch = document.getElementById(`inputSearch`)
-// const filtrarProductos = ()=>{
-//     let parametro = inputSearch.value.trim()
-//     let resultado = resp.filter(data => data.nombre.includes(parametro(data)))
-//     if (resultado.length > 0){
-//         cargarProductos(resultado)
-//     }
-// }
-// // Ejecucion de filtrado de productos
-// inputSearch.addEventListener("search", () => {
-//     filtrarProductos()
-// }) 
-
 const procesaCompra = document.getElementById(`continuarCompra`)
 
 if(procesaCompra){
@@ -193,56 +156,30 @@ if(procesaCompra){
             confirmButtonText: "Aceptar",
         });
     } else {
-        location.href = "checkout.html";
+        Swal.fire({
+            title: "Ve hasta abajo de la pagina para finalizar la compra",
+            text: "Completa el formulario",
+            icon: "success",
+            confirmButtonText: "Aceptar",
+        });
         }
     });
 }
-    // function datosCliente(){
-    //     const { value: formValues } = await Swal.fire({
-    //         title: 'Multiple inputs',
-    //         html:
-    //           '<input id="swal-input1" class="swal2-input">' +
-    //           '<input id="swal-input2" class="swal2-input">',
-    //         focusConfirm: false,
-    //         preConfirm: () => {
-    //           return [
-    //             document.getElementById('swal-input1').value,
-    //             document.getElementById('swal-input2').value
-    //           ]
-    //         }
-    //       })
-          
-    //       if (formValues) {
-    //         Swal.fire(JSON.stringify(formValues))
-    //       }
 
-    // }
+let nombre = document.querySelector("#nombre");
+let email = document.querySelector("#email");
+let apellido = document.querySelector("#apellido")
 
-let email = document.getElementById(`email`)
-let nombre = document.getElementById(`nombre`)
-let apellido = document.getElementById(`apellido`)
+let form = document.querySelector("#datosCliente");
 
-email.addEventListener("input", function (){
+let info = document.querySelector(".info");
 
-})
-
-nombre.addEventListener("input", function (){
-    
-})
-
-apellido.addEventListener("input", function (){
-    
-})
-
-let form = document.getElementById(`datosCliente`)
-
-let alert = document.querySelector(".pintarAlert")
-
-const pinta = form.addEventListener("submit", () => {
+// Pinto un alert con nombre y apellido que ingrese el usuario
+const pintarAlert = form.addEventListener("submit", function (e) {
     e.preventDefault();
-    alert.innerHTML = `
-<div class="alert alert-warning" role="alert">
-<h5> Muchas gracias ${nombre.value} ${apellido.value} por tu compra.</h5>
-<h5> Para finalizar la compra te contactaremos por este contacto ${email.value}</h5>
-</div>`
+    info.innerHTML = `
+    <div class="alert alert-success" role="alert">
+        <h5> Muchas gracias ${nombre.value} ${apellido.value} por tu compra.</h5>
+        <h5> Para finalizar la compra te contactaremos a este Mail: ${email.value}</h5>
+    </div>`;
 });
