@@ -89,18 +89,9 @@ header {
     margin-left: 350px;
     font-family: sans-serif;
 }
-.form-label{
-    max-width: 1000px;
-    height: 35px;
-    margin-top: 35px;
-    margin-left: 350px;
-    font-family: sans-serif;
-}
 
-.checkout{
-    width: 1000px;
-    display: flex;
-    margin-left: 800px;
+.pedido{
+    width: 600px;
 }
 
 .finalizar{
@@ -108,7 +99,16 @@ header {
     margin-top: 20px;
 }
 
+.finalizar-carrito{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+
 .prod{
     margin-top: 50px;
     margin-left: 350px;
+}
+
+.total{
+    margin-bottom: 5px;
 }

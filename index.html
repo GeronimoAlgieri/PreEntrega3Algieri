@@ -7,7 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="estilos.css">
     <script defer src="/data.json"></script>
     <script defer src="./js/app.js"></script>
@@ -51,14 +50,17 @@
             <h5 class="modal-tittle" id="modalTittle">Carrito de comrpas</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body" id="#carritoVacio">
+          <div class="modal-body" id="carritoVacio">
             <p>Agrega un producto</p>
+          </div><hr>
+          <div>
+            <h5 class="text-end p-2">Total de la compra: <span id="totalCompra">0</span></h5>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-danger" id="vaciarCarrito">
               Vaciar carrito
             </button>
-            <button type="button" id="procesarCompra" class="btn btn-primary" id="continuarCompra">
+            <button type="button" class="btn btn-primary" id="continuarCompra">
               Continuar compra
             </button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -86,8 +88,25 @@
         </div>
     </div> -->
   </div>
+
+  <form id="datosCliente">
+    <div class="mb-3">
+      <label for="name" class="form-label">Email</label>
+      <input name="name" type="email" class="form-control pedido" id="email" aria-describedby="emailHelp">
+      <div id="emailHelp" class="form-text">Nunca compartiremos su correo electrónico con nadie más.</div>
+    </div>
+    <div class="mb-3">
+      <label for="name" class="form-label">Nombre</label>
+      <input name="name" type="name" class="form-control pedido" id="nombre">
+    </div>
+    <div class="mb-3">
+      <label for="name" class="form-label">Apellido</label>
+      <input name="name" type="name" class="form-control pedido" id="apellido">
+    </div>
+    <button type="submit" class="btn btn-primary" id="enviar">Enviar</button>
+  </form>
+  <div class="pintarAlert"></div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
