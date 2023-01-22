@@ -1,8 +1,8 @@
 // Un array vacio para el carrito
 let carrito = [];
-// let total = 0
 const elementos = document.getElementById(`carrito-contenedor`)
 
+// Para buscar un productos en el input de busqueda
 document.addEventListener("keyup", e=>{
 
     if (e.target.matches("#inputSearch")){
@@ -30,7 +30,7 @@ const fetchData = async () => {
     renderizar(data)
 }
 
-    // Tabla de productos
+// Tabla de productos
 function renderizar(productos){
     productos.forEach((prod)=>{
         const div = document.createElement("div")
@@ -51,6 +51,7 @@ function renderizar(productos){
     })
 }
 
+// Funcion para agragar al carrito
 function agregarAlCarrito(e, prods){
     const prodElegidos = prods.find(el => el.id === parseInt(e.target.id))
     carrito.push(prodElegidos)
@@ -58,6 +59,7 @@ function agregarAlCarrito(e, prods){
     notificar()
 }
 
+// Esta funcion es para notificar que se agrego el producto al carrito
 function notificar(){
     Swal.fire({
         position: 'top-end',
@@ -91,6 +93,7 @@ function carritoHTML() {
     localStorage.setItem('carrito', JSON.stringify(carrito))
 }
 
+// Elimino los productos uno por uno
 const eliminarDelCarrito = (id) => {
     const producto = carrito.find((prod) => prod.id === id);
     carrito.splice(carrito.indexOf(producto), 1);
@@ -102,28 +105,19 @@ const eliminarDelCarrito = (id) => {
         showConfirmButton: false,
         timer: 1500
     })
-};;
+};
 
+// Con este boton vacio todo el carrito
 const vaciarCarrito = document.getElementById('vaciarCarrito');
 vaciarCarrito.addEventListener('click', () => {
     carrito.splice(0, carrito.length);
     carritoHTML();
 });
-
-
-
-// const calcularTotalCompra = () => {
-//     let total = 0;
-//     carrito.forEach((prod) => {
-//         total += prod.precio * prod.cantidad;
-//     });
-//     totalCompra.innerHTML = total;
-// };
+// Sumo el Total de los productos en el carrito
 function actualizarTotal() {
     const totalCalculado = carrito.reduce((acc, prod) => acc + (prod.precio * prod.cantidad), 0);
     totalCompra.textContent = "$" + totalCalculado;
 }
-
 
 // Plasmo los productos en el HTML
 const cargarProductos = (array)=> {
@@ -146,6 +140,7 @@ function limpiarHTML(){
 
 const procesaCompra = document.getElementById(`continuarCompra`)
 
+// Diferentes alertas para notificar cuando el usuario apreta el boton continuar compra
 if(procesaCompra){
     procesaCompra.addEventListener("click", () => {
     if (carrito.length === 0) {
